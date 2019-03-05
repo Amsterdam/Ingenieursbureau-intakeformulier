@@ -10,15 +10,19 @@ form {
 
 .field .field-object {
   background-color: rgb(245, 245, 245);
-  padding: 10px 10px 10px 15px;
-  margin-bottom:20px;
+  padding: 0px 10px 10px 15px;
+  margin-bottom: 15px;
+}
+
+.field .field-string {
+  margin-bottom:0px;
 }
 
 legend {
   font-weight: bolder; 
 }
 
-label{
+label {
   display: inline;
   vertical-align: middle;
   float: left;
@@ -27,9 +31,31 @@ label{
 }
 
 .form-control {
-  display: inline;
-  vertical-align: middle;
-  float: left;
-  width: 50%;
+  width: 50%;  
   margin:3px;
+    line-height: 0px;
+}
+
+.field {
+  width: 100%;
+}
+
+div .col-xs-9 {
+  padding: 0px;
+  margin: 0px;
+
+}
+
+div {
+  padding: 0px;
+}
+
+input {
+  line-height: 12px;
+}
+
+.col-xs-2 {
+  width: 0;
+  margin: 0;
+  padding: 0;
 }

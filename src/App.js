@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 
 import Form from "react-jsonschema-form";
@@ -9,24 +10,45 @@ const log = (type) => console.log.bind(console, type);
   
 let today = new Date();
 let dd = today.getDate();
-
 let mm = today.getMonth()+1; 
 const yyyy = today.getFullYear();
-if(dd<10) 
-{
-    dd=`0${dd}`;
+
+// Add preleading zeros in dates
+if (dd < 10) {
+    dd = `0${dd}`;
 } 
 
-if(mm<10) 
-{
+if (mm < 10) {
     mm=`0${mm}`;
 } 
+
 today = `${yyyy}-${mm}-${dd}`;
+
 console.log(today);
 
+var pre_project_name = {$ref: "#pre_opdrachtfase/project_information/project_name"}
 
 const schema = {
-  "title": "Verkrijgen Project- en werkordernummers",
+  "definitions": {
+    "person": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "title": "Voornaam",
+          "type": "string"},
+        "last_name": {
+          "title": "Achternaam",
+          "type": "string"},
+        "email": {
+          "title": "E-mail", 
+          "type": "string",
+          "format": "email"
+        }
+      }
+    }
+  },
+  "title": "Pre-opdrachtfase",
+  "id": "pre_project_phase",
   "type": "object",
   "properties": {
     "project_information": {
@@ -38,20 +60,20 @@ const schema = {
       ],
       "properties": {
         "project_feature": {
-          "title": "Kenmerk opdracht IB",
+          "title": "Type",
           "type": "string",
           "enum": [
+            "ADO",
             "BGO",
             "HER",
             "GON",
-            "ADO",
             "Other"
           ],
           "enumNames": [
+            "Advies en Onderzoek",
             "Beheer en Groot Onderhoud",
             "Herinrichting",
             "Gebiedsontwikkeling en Nieuwbouw",
-            "Advies en Onderzoek",
             "Overig"
           ]
         },
@@ -76,32 +98,48 @@ const schema = {
       ],
       "properties": {
         "organisation": {
-          "title": "Opdrachtgevende organisatie",
+          "title": "Organisatie",
           "type": "string",
           "enum": [
-            "SD",
-            "V&OR",
             "GenO",
+            "R&D",
+            "SD-C",
+            "SD-N",
+            "SD-NW",
+            "SD-O",
+            "SD-W",
+            "SD-Z",
+            "SD-ZO",
+            "V&OR-SB",
+            "V&OR-AOG",
             "Other"
           ],
           "enumNames": [
-            "Stadsdelen",
-            "Verkeer en Openbare Ruimte",
             "Grond en Ontwikkeling",
+            "Ruimte en Duurzaamheid",
+            "Stadsdeel Centrum",
+            "Stadsdeel Nieuw-West",
+            "Stadsdeel Noord",
+            "Stadsdeel Oost",
+            "Stadsdeel West",
+            "Stadsdeel Zuid",
+            "Stadsdeel Zuidoost",
+            "Verkeer en Openbare Ruimte - Stedelijk beheer",
+            "Verkeer en Openbare Ruimte - Ambtelijk OpdrachtGever",
             "Overig"
           ]
         },
         "board_client": {
           "title": "Bestuurlijk",
-          "type": "string"
+          "$ref": "#/definitions/person"
         },
         "main_client": {
           "title": "Ambtelijk",
-          "type": "string"
+          "$ref": "#/definitions/person"
         },
         "sub_client": {
           "title": "Gedelegeerd",
-          "type": "string"
+          "$ref": "#/definitions/person"
         }
       }
     },
@@ -110,65 +148,74 @@ const schema = {
       "description": "",
       "type": "object",
       "required": [
-        "projectmanager"
+        "projectmanager",
+        "account"
       ],
       "properties": {
         "projectmanager": {
-          "title": "Naam Opdrachtverantwoordelijke IB",
-          "type": "string"
-        },
-        "projectmanager_email": {
-          "title": "E-mail Opdrachtverantwoordelijke IB",
-          "type": "string",
-          "format": "email"
+          "title": "Opdrachtverantwoordelijke",
+          "$ref": "#/definitions/person"
         },
         "sub_projectleider": {
-          "title": "Naam Deelprojectleider IB",
-          "type": "string"
-        },
-        "sub_projectleider_email": {
-          "title": "E-mail Deelprojectleider IB",
-          "type": "string",
-          "format": "email"
+          "title": "Deelprojectleider",
+          "$ref": "#/definitions/person"
         },
         "controller": {
-          "title": "Naam Projectbeheerser IB",
-          "type": "string"
+          "title": "Projectbeheerser",
+          "$ref": "#/definitions/person"
         },
-        "controller_email": {
-          "title": "E-mail Projectbeheerser IB",
-          "type": "string",
-          "format": "email"
-        },
-        "account_holder": {
-          "title": "Naam Verantwoordelijk accounthouder en/of teamleider IB",
-          "type": "string"
-        },
-        "account_holder_email": {
-          "title": "E-mail Verantwoordelijk accounthouder en/of teamleider IB",
-          "type": "string",
-          "format": "email"
+        "account": {
+            "title": "Accounthouder/teamleider",
+            "type": "string",
+            "default": "account_holder",
+            "enum": [
+              "account_holder",
+              "teamleader"
+            ],
+            "enumNames": [
+              "Accounthouder",
+              "Teamleider"
+            ]
+        }
+      },
+      "dependencies": {
+        "account": {
+          "oneOf": [
+            {
+              "properties": {
+                "account": {
+                  "enum": [
+                    "account_holder"
+                  ]
+                },
+                "account_holder": {
+                  "title": "Accounthouder",
+                  "$ref": "#/definitions/person"
+                }
+              }
+            },
+            {
+              "properties": {
+                "account": {
+                  "enum": [
+                    "teamleader"
+                  ]
+                },
+                "teamleader": {
+                  "title": "Teamleider",
+                  "$ref": "#/definitions/person"
+                }
+              }
+            }
+          ]
         }
       }
     },
     "assignment_structure": {
       "title": "Opdrachtstructuur",
-      "description": "namen van te verkrijgen TT-nummers",
+      "description": "Namen voor boekingsnummers te verkrijgen uit Timetell.",
       "type": "object",
       "properties": {
-        "work_orders": {
-          "title": "Namen voor werkorder(s) (n keer)",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "work_order": {
-                "title": "Werkordernaam",
-                "type": "string"
-              }
-            }
-          }
-        },
         "project_number_available": {
           "title": "Bestaand projectnummer beschikbaar?",
           "type": "string",
@@ -177,6 +224,20 @@ const schema = {
             "Ja"
           ],
           "default": "Nee"
+        },
+        "work_orders": {
+          "title": "Namen voor werkorder(s)",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "work_order": {
+                "title": "Werkordernaam",
+                "type": "string",
+                "default": pre_project_name.value
+              }
+            }
+          }
         }
       },
       "dependencies": {
@@ -217,21 +278,40 @@ const schema = {
           "type": "number"
         },
         "estimate_total_costs": {
-          "title": "Indicatiebedrag totale kosten gehele opdracht (niet alleen uren IB)",
-          "description": "Handtekening vereist >10.000",
-          "type": "number"
-        }
+          "title": "Indicatie totale inzet IB (als onderdeel van totale kosten opdracht)",
+          "description":"",
+          "type": "string",
+          "enum": [
+            "0-10k", 
+            "10-50k", 
+            "50-250k", 
+            "250-1000k", 
+            ">1000k"
+          ],
+        "enumNames": [
+          "0-10k", 
+          "10-50k", 
+          "50-250k", 
+          "250-1000k", 
+          ">1000k"
+          ]
+        },
       },
       "dependencies": {
         "estimate_total_costs": {
           "oneOf": [
-              {
+            {
               "properties": {
                 "estimate_total_costs": {
-                  "maximum": 10000
+                  "enum": [
+                    "10-50k", 
+                    "50-250k", 
+                    "250-1000k", 
+                    ">1000k"
+                  ]
                 },
-                "approved_by_client_verbally": {
-                  "title": "Mondeling akkoord Opdrachtgever",
+                "approved_by_client": {
+                  "title": "Akkoord Opdrachtgever",
                   "type": "boolean"
                 }
               }
@@ -239,10 +319,12 @@ const schema = {
             {
               "properties": {
                 "estimate_total_costs": {
-                  "minimum": 10001
+                  "enum": [
+                    "0-10k"
+                  ]
                 },
-                "approved_by_client": {
-                  "title": "Akkoord Opdrachtgever",
+                "approved_by_client_verbally": {
+                  "title": "Mondeling akkoord Opdrachtgever",
                   "type": "boolean"
                 }
               }
@@ -254,11 +336,19 @@ const schema = {
   }
 }
 
-
 const formData = {
    "project_name": "Projectnaam",
    "date_intake": today
 };
+
+//const uiSchema = {
+//  "ui:order": [
+//    "firstName",
+//    "lastName",
+//    "*",
+//    "password"
+//  ]
+//}
 
 class App extends Component {  
 
