@@ -446,6 +446,7 @@ const schema = {
                 {
                 properties: {
                   estimate_costs_budget_hours: {
+                    minimum: 0,
                     maximum: 10000
                   },
                   approved_by_client_verbally: {
