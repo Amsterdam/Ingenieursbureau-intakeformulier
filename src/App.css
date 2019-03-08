@@ -1,11 +1,7 @@
 #root {
-  width: 560px;
+  width: 490px;
   margin-left: auto;
   margin-right: auto;
-}
-
-form {
-  text-align: left;
 }
 
 .field .field-object {
@@ -14,30 +10,36 @@ form {
   margin-bottom: 15px;
 }
 
-.field .field-string {
-  margin-bottom:0px;
+.form-group .field .field-string {
+  margin-bottom: 5px;
+}
+
+.form-control {
+   padding: 0px 10px 0px 10px;
+ }
+
+div {
+  margin: 1px;
 }
 
 legend {
   font-weight: bolder; 
+  margin-bottom:10px;
+  padding-top: 10px;
 }
 
-label {
-  display: inline;
-  vertical-align: middle;
-  float: left;
+.field-description {
+  float: right;
+  font-style: italic;
+  margin-left: 0px;
   clear: left;
-  width: 48%;
 }
 
-.form-control {
-  width: 50%;  
-  margin:3px;
-    line-height: 0px;
-}
-
-.field {
-  width: 100%;
+label { 
+  padding-left: 0px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  margin-bottom: 0px;
 }
 
 div .col-xs-9 {
@@ -46,16 +48,18 @@ div .col-xs-9 {
 
 }
 
-div {
-  padding: 0px;
+
+.xc-col-2: {
+  width:0px;
 }
 
-input {
-  line-height: 12px;
+.col_left {
+  width:49%;
+  float: left;
 }
 
-.col-xs-2 {
-  width: 0;
-  margin: 0;
-  padding: 0;
+.col_right {
+  width:49%;
+  float:right;
+  clear:;
 }
