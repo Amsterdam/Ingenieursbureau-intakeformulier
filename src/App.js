@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-
+import update from 'react-addons-update';
 import Form from "react-jsonschema-form";
   
 // import logo from './logo.svg';
@@ -300,7 +300,7 @@ const schema = {
       type: "object",
       properties: {
         project_number_available: {
-          title: "Bestaand projectnummer beschikbaar?",
+          title: "Bestaand projectnummer",
           type: "string",
           enum: [
             "Nee",
@@ -314,7 +314,11 @@ const schema = {
           items: {
             type: "object",
             properties: {
-              work_order: {
+              work_order_prefix: {
+                title: "Project",
+                type: "string"
+              },
+              work_order_name: {
                 title: "Werkordernaam",
                 type: "string"
               }
@@ -342,7 +346,7 @@ const schema = {
                   ]
                 },
                 existing_project_number: {
-                  title: "Wat is het hoofdprojectnummer?",
+                  title: "Hoofdprojectnummer",
                   type: "number"
                 }
               }
@@ -468,12 +472,6 @@ const schema = {
   }
 }
 
-const formData = {
-  project_information: {
-    project_name: "",
-    date_intake: today
-  }
-};
 
 const uiSchema = {
   project_information: {
@@ -484,6 +482,20 @@ const uiSchema = {
     date_end: {
       "ui:widget": "date",
       classNames: "col_right"
+    }
+  },
+  assignment_structure: {
+    work_orders: {
+      items: {
+        classNames: "workorder",
+        work_order_prefix: {
+          "ui:readonly": true,
+          classNames: "col_left"
+        },
+        work_order_name: {
+          classNames: "col_right"
+        }
+      }
     }
   },
   client_information: {
@@ -562,14 +574,42 @@ const uiSchema = {
   }
 };
 
-class App extends Component {   
+
+class App extends Component {
+
+  state = { formData: {} }
+
+  handleSubmit = data => {
+    this.setState({ formData: data.formData, submitted: true })
+  }
+
+ 
+  handleChange = data => {  
+    const formData = data.formData
+    // 1. Make a shallow copy of the items
+    let items = formData.assignment_structure.work_orders
+    // Fix undefined error
+    if (items) {
+      // copy object, prevent mutations
+      const project_name = formData.project_information.project_name;
+      const newItems = items.map(work_order => {
+        return {
+          ...work_order,
+          work_order_prefix : project_name
+        }
+      });
+      this.setState({formData: update(formData, {assignment_structure: {work_orders : {$set: newItems}}})});
+    }
+    
+  }
+
   render() {
     return(
       <Form schema={schema}
-        formData={formData}
         uiSchema={uiSchema}
-        onChange={log("changed")}
-        onSubmit={log("submitted")}
+        formData={this.state.formData}
+        onChange={this.handleChange}
+        onSubmit={this.handleSubmit}
         onError={log("errors")} />
     )
   }

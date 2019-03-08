@@ -4,15 +4,23 @@
   margin-right: auto;
 }
 
+
 .field .field-object {
   background-color: rgb(245, 245, 245);
-  padding: 0px 10px 10px 15px;
+  padding: 0px 10px 10px 10px;
   margin-bottom: 15px;
 }
 
 .form-group .field .field-string {
   margin-bottom: 5px;
 }
+
+.field .field-object .workorder{
+  padding: 10px 10px 0px 10px;
+  margin-bottom: 0px;
+}
+
+
 
 .form-control {
    padding: 0px 10px 0px 10px;
@@ -43,14 +51,13 @@ label {
 }
 
 div .col-xs-9 {
+  width: 100%;
   padding: 0px;
   margin: 0px;
-
+  clear: both;
 }
-
-
-.xc-col-2: {
-  width:0px;
+.form-group {
+  width: 100%;
 }
 
 .col_left {
