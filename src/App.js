@@ -563,8 +563,6 @@ const uiSchema = {
 };
 
 class App extends Component {   
-  const test = this.state.formData;
-  console.log(test)
   render() {
     return(
       <Form schema={schema}
