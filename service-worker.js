@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/ingenieursbureau-intakeformulier/precache-manifest.2a16a0a1523dfaa9357434d1922341e8.js"
+  "/ingenieursbureau-intakeformulier/precache-manifest.c62d2de5942ed1e6b72698248f90785e.js"
 );
 
 workbox.clientsClaim();
