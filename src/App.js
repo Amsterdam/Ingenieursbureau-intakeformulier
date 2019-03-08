@@ -1,8 +1,10 @@
 
 import React, { Component } from 'react';
+
 import update from 'react-addons-update';
 import Form from "react-jsonschema-form";
-  
+import ReactJson from 'react-json-view'
+
 // import logo from './logo.svg';
 import './App.css';
 
@@ -600,21 +602,29 @@ class App extends Component {
         }
       });
       this.setState({formData: update(formData, {assignment_structure: {work_orders : {$set: newItems}}})});
+    } else {
+      this.setState({ formData: data.formData })
     }
-    
   }
+  render () {
+    const { submitted, formData } = this.state;
 
-  render() {
-    return(
-      <Form schema={schema}
+    const content = submitted
+    ? (<div>
+        <h1>Verstuurde informatie:</h1> 
+        <ReactJson src={formData} />
+      </div>)
+    : (<Form 
+        schema={schema}
         uiSchema={uiSchema}
         formData={this.state.formData}
         onChange={this.handleChange}
         onSubmit={this.handleSubmit}
         onError={log("errors")} />
+      )
+    return(
+      <div>{content}</div>
     )
   }
 }
-
-
 export default App;
