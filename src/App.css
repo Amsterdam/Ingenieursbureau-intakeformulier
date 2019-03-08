@@ -16,7 +16,7 @@
 }
 
 .field .field-object .workorder{
-  padding: 0px 10px 0px 0px;
+  padding: 0px 00px 0px 0px;
   margin-bottom: 0px;
 }
 
@@ -28,6 +28,13 @@ div {
   margin: 1px;
 }
 
+.col-xs-9 {
+  width:100%;
+  padding: 0px;
+}
+.checkbox {
+  clear:both;
+}
 legend {
   font-weight: bolder; 
   margin-bottom:10px;
@@ -48,21 +55,16 @@ label {
   margin-bottom: 0px;
 }
 
-div .col-xs-9 {
-  width: 100%;
+.row .array-item-list {
   padding: 0px;
   margin: 0px;
-  float: none;
 }
-
-div .row {
+.row {
   margin: 10px 0px 0px 10px;
 }
-.form-group {
-  width: 100%;
-}
-div .array-item {
-  margin: 10px;
+
+.array-item-toolbox {
+  padding: 5px;
 }
 .col_left {
   width:49%;
