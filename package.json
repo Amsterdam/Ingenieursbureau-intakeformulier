@@ -1,14 +1,14 @@
 {
   "name": "sof-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "homepage": "https://amsterdam.github.io/ingenieursbureau-intakeformulier",
   "dependencies": {
     "bootstrap": "^3.4.1",
     "gh-pages": "^2.0.1",
     "glyphicons-halflings": "^1.9.1",
+    "immutability-helper": "^3.0.0",
     "react": "^16.8.3",
-    "react-addons-update": "^15.6.2",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.8.3",
     "react-json-view": "^1.19.1",
