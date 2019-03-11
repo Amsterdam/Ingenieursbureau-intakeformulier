@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react';
 
-import update from 'react-addons-update';
+// import update from 'react-addons-update';
+import update from 'immutability-helper';
 import Form from "react-jsonschema-form";
 import ReactJson from 'react-json-view'
 
@@ -384,11 +385,11 @@ const schema = {
           description: "Als onderdeel van totale integrale projectkosten",
           type: "string",
           enum: [
-            "0-10k", 
-            "10-50k", 
-            "50-250k", 
-            "250-1000k", 
-            ">1000k"
+            0, 
+            10000, 
+            50000, 
+            250000, 
+            1000000
           ],
         enumNames: [
           "0-10k", 
@@ -416,10 +417,10 @@ const schema = {
               properties: {
                 estimate_costs_organisation: {
                   enum: [
-                    "10-50k", 
-                    "50-250k", 
-                    "250-1000k", 
-                    ">1000k"
+                    10000, 
+                    50000, 
+                    250000, 
+                    1000000
                   ]
                 },
                 approved_by_client: {
@@ -432,7 +433,7 @@ const schema = {
               properties: {
                 estimate_costs_organisation: {
                   enum: [
-                    "0-10k"
+                    0
                   ]
                 },
                 approved_by_client_verbally: {
@@ -474,7 +475,6 @@ const schema = {
     }
   }
 }
-
 
 const uiSchema = {
   project_information: {
@@ -586,7 +586,6 @@ class App extends Component {
     this.setState({ formData: data.formData, submitted: true })
   }
 
- 
   handleChange = data => {  
     const formData = data.formData
     // 1. Make a shallow copy of the items
@@ -611,7 +610,7 @@ class App extends Component {
 
     const content = submitted
     ? (<div>
-        <h1>Verstuurde informatie:</h1> 
+        <h1>Te versturen informatie:</h1> 
         <ReactJson src={formData} />
       </div>)
     : (<Form 

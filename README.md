@@ -1,7 +1,11 @@
 ## Intake form Ingenieursbureau for building projects Amsterdam
 
 This intake form is a demo to work towards a City wide implementation of registering all building projects in a uniform way. 
-The form is build by using the [moziila react-jsonschema-form](https://github.com/mozilla-services/react-jsonschema-form) and  [The Create React App](https://github.com/facebook/create-react-app).
+The form is build by using:
+
+- [moziila react-jsonschema-form](https://github.com/mozilla-services/react-jsonschema-form)  
+- [The Create React App](https://github.com/facebook/create-react-app)
+- [Immutability Helper](https://github.com/kolodny/immutability-helper)
 
 ## How to run
 
@@ -15,19 +19,10 @@ npm start
 This Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## How to build to gh-pages
 
-### `npm test`
+To build the form with production settings and push it to the gh-pages branch do:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+npm run deploy
+```
