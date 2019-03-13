@@ -8,7 +8,7 @@
 .field .field-object {
   background-color: rgb(245, 245, 245);
   padding: 0px 10px 10px 10px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .form-group .field .field-string {
@@ -69,6 +69,12 @@ label {
 .col_left {
   width:49%;
   float: left;
+}
+
+.col_3 {
+  width:31%;
+  float: left;
+  margin-right:9px;
 }
 
 .col_right {

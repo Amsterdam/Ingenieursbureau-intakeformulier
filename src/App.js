@@ -46,6 +46,22 @@ const schema = {
           format: "email"
         }
       }
+    },   
+    order_code: {
+      type: "object",
+      properties: {
+        business_unit: {
+          title: "Bedrijfseenheid",
+          type: "string"},
+        main_account: {
+          title: "Hoofdrekening",
+          type: "string"},
+        work_order: {
+          title: "Werkorder", 
+          type: "string",
+          format: "email"
+        }
+      }
     }
   },
   title: "Pre-opdrachtfase",
@@ -141,7 +157,7 @@ const schema = {
         },
         booking_code: {
           title: "Boekingscombinatie AFS (indien reeds bekend)",
-          type: "string"
+          $ref: "#/definitions/order_code"
         },
         board_client: {
           title: "Bestuurlijk",
@@ -152,11 +168,11 @@ const schema = {
               type: "string"},
             last_name: {
               title: "Achternaam",
-              type: "string"},
+              type: "string"}
           }
         },
         main_client: {
-          title: "Opdrachtgeverschap",
+          title: "Ambtelijk",
           $ref: "#/definitions/person"
         },
         delegated_client_question: {
@@ -488,6 +504,7 @@ const uiSchema = {
     }
   },
   assignment_structure: {
+
     work_orders: {
       items: {
         classNames: "workorder",
@@ -502,6 +519,17 @@ const uiSchema = {
     }
   },
   client_information: {
+    booking_code: {
+      business_unit:{
+        classNames: "col_3"
+      },
+      main_account:{
+        classNames: "col_3"
+      },
+      work_order:{
+        classNames: "col_3"
+      }
+    },
     board_client: {
       first_name: {
         classNames: "col_left"
