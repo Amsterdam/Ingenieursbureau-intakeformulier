@@ -13,7 +13,8 @@
     "react-dom": "^16.8.3",
     "react-json-view": "^1.19.1",
     "react-jsonschema-form": "^1.2.1",
-    "react-scripts": "2.1.5"
+    "react-scripts": "2.1.5",
+    "react-tabs": "^3.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
