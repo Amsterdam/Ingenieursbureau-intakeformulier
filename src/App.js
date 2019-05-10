@@ -4,7 +4,11 @@ import React, { Component } from 'react';
 // import update from 'react-addons-update';
 import update from 'immutability-helper';
 import Form from "react-jsonschema-form";
-import ReactJson from 'react-json-view'
+import ReactJson from 'react-json-view';
+//import { Tabs, TabLink, TabContent } from 'react-tabs-redux';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import "react-tabs/style/react-tabs.css";
+ 
 
 // import logo from './logo.svg';
 import './App.css';
@@ -29,7 +33,7 @@ today = `${yyyy}-${mm}-${dd}`;
 
 console.log(today);
 
-const schema = {
+const pre_project_schema = {
   definitions: {
     person: {
       type: "object",
@@ -492,7 +496,290 @@ const schema = {
   }
 }
 
-const uiSchema = {
+const project_schema = {
+  title: "Opdrachtfase",
+  type: "object",
+  properties: {
+    project_information: {
+      title: "Opdrachtbeschrijving",
+      description: "Benut bij intake en werk uit voor de definitieve opdracht. Indien projectplan opgesteld, uitwerking daar.",
+      type: "object",
+      required: [
+        "project_reason"
+      ],
+      properties: {
+        project_reason: {
+          type: "string",
+          title: "Aanleiding"
+        },
+        project_goal: {
+          type: "string",
+          title: "Doel"
+        },
+        project_result: {
+          type: "string",
+          title: "Resultaat"
+        },
+        project_definition: {
+          type: "string",
+          title: "Afbakening"
+        }
+      }
+    },
+    project_cost_recoveries: {
+      title: "Dekking van kosten",
+      description: "Indien projectplan opgesteld; zie daar voor details/onderbouwing.",
+      type: "object",
+      required: [
+        "available_budget_client"
+      ],
+      properties: {
+        available_budget_client: {
+          type: "number",
+          title: "Budget opdrachtgever"
+        },
+        cost_recoveries: {
+          title: "Type dekkingsbronnen",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              cost_recovery: {
+                title: "Dekkingsbron",
+                type: "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    project_expected_budget: {
+      title: "Geraamde kosten",
+      description: "Indien projectplan opgesteld; zie daar voor details/onderbouwing.",
+      type: "object",
+      required: [
+        "project_budget_contactor"
+      ],
+      properties: {
+        project_budget_contactor: {
+          type: "number",
+          title: "Kosten Ingenieursbureau"
+        },
+        project_budget_external_contactors: {
+          type: "number",
+          title: "Kosten inkoop werk van derden"
+        }
+      }
+    },
+    project_through_put_time: {
+      title: "Doorlooptijd",
+      type: "object",
+      properties: {
+        date_start: {
+          title: "Van",
+          type: "string",
+          format: "date",
+          default: today
+        },
+        date_end: {
+          title: "Tot",
+          type: "string",
+          format: "date",
+          default: today
+        }
+      }
+    },
+    project_milestones: {
+      title: "Mijlpalen en producten",
+      description: "Indien projectplan opgesteld; zie daar voor details/onderbouwing.",
+      type: "object",
+      properties: {
+        milestones: {
+          title: "Hoofdmijlpalen",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              milestone: {
+                title: "Mijlpaal",
+                type: "string"
+              }
+            }
+          }
+        },
+        products: {
+          title: "Producten",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              product: {
+                title: "Product",
+                type: "string"
+              }
+            }
+          }
+        },
+        project_file: {
+          title:  "Projectdossier",
+          type: "string",
+          format: "data-url"
+        }
+      }
+    },
+    project_risks: {
+      title: "Risico's",
+      type: "object",
+      properties: {
+        financial_risks: {
+          title: "Geld",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              financial_risk: {
+                title: "Financieel",
+                type: "string"
+              }
+            }
+          }
+        },
+        time_risks: {
+          title: "Tijd",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              time_risk: {
+                title: "Tijd",
+                type: "string"
+              }
+            }
+          }
+        },
+        technical_risks: {
+          title: "Technisch",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              technical_risk: {
+                title: "Technisch",
+                type: "string"
+              }
+            }
+          }
+        },  
+        political_risks: {
+          title: "Politiek/bestuurlijk",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              technical_risk: {
+                title: "Politiek/bestuurlijk",
+                type: "string"
+              }
+            }
+          }
+        },
+        social_risks: {
+          title: "Maatschappelijk/omgeving",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              social_risk: {
+                title: "Maatschappelijk/omgeving",
+                type: "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    project_context: {
+      title: "Complexiteit",
+      type: "object",
+      properties: {
+        project_strategy: {
+          title: "Markt/contractstrategie",
+          description: "Denk hierbij aan bijvoorbeeld EMVI (Gunnen op waarde)",
+          type: "string"
+        },
+        needed_compentency: {
+          title: "Gevraagde bijzondere competenties en kennis",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              compentence: {
+                title: "Competentie/kennis",
+                type: "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    project_identification_numbers: {
+      title: "Projectnummers",
+      type: "object",
+      properties: {
+        project_id_mip: {
+          title: "Meerjaren Informatie Planning (MIP)",
+          type: "string"
+        },
+        project_id_cora: {
+          title: "Coordinatie Openbare Ruimte Amsterdam (CORA)",
+          type: "string"
+        },
+        project_id_grex: {
+          title: "Grond Exploitatie (GREX)",
+          type: "string"
+        },
+        project_id_digital_workplans: {
+          title: "Digitale Werkplannen",
+          type: "string"
+        },
+        project_plan_file: {
+          title: "Projectplan",
+          description: "Voeg toe bij capaciteitsraming > € 50.000, inclusief bijlagen",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              document: {
+                title: "Document",
+                type: "string",
+                format: "data-url"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+const project_uiSchema = {
+  "project_information": {
+    "project_reason": {
+      "ui:widget": "textarea"
+    },
+    "project_goal": {
+      "ui:widget": "textarea"
+    },
+    "project_result": {
+      "ui:widget": "textarea"
+    },
+    "project_definition": {
+      "ui:widget": "textarea"
+    }
+  },
+}
+
+const pre_project_uiSchema = {
   project_information: {
     date_start: {
       "ui:widget": "date",
@@ -504,7 +791,6 @@ const uiSchema = {
     }
   },
   assignment_structure: {
-
     work_orders: {
       items: {
         classNames: "workorder",
@@ -602,7 +888,7 @@ const uiSchema = {
         classNames: "col_right"
       }
     }
-  }
+  },
 };
 
 
@@ -641,13 +927,31 @@ class App extends Component {
         <h1>Te versturen informatie:</h1> 
         <ReactJson src={formData} />
       </div>)
-    : (<Form 
-        schema={schema}
-        uiSchema={uiSchema}
-        formData={this.state.formData}
-        onChange={this.handleChange}
-        onSubmit={this.handleSubmit}
-        onError={log("errors")} />
+    : (<div>
+        <Tabs>
+          <TabList>
+            <Tab>Pre-opdracht</Tab>
+            <Tab>Opdracht</Tab>
+          </TabList>
+          <TabPanel>
+            <Form 
+              schema={pre_project_schema}
+              uiSchema={pre_project_uiSchema}
+              formData={this.state.formData}
+              onChange={this.handleChange}
+              onSubmit={this.handleSubmit}
+              onError={log("errors")} />
+          </TabPanel>
+          <TabPanel>
+            <Form 
+              schema={project_schema}
+              uiSchema={project_uiSchema}
+              formData={this.state.formData}
+              onSubmit={this.handleSubmit}
+              onError={log("errors")} />
+          </TabPanel>
+        </Tabs>
+      </div>
       )
     return(
       <div>{content}</div>
