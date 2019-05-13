@@ -79,22 +79,6 @@ const pre_project_schema = {
         "project_name"
       ],
       properties: {
-        project_feature: {
-          title: "Hoofdtype",
-          type: "string",
-          enum: [
-            "ADO",
-            "BGO",
-            "HER",
-            "GON"
-          ],
-          enumNames: [
-            "Advies en Onderzoek",
-            "Beheer en Groot Onderhoud",
-            "Herinrichting",
-            "Gebiedsontwikkeling en Nieuwbouw"
-          ]
-        },
         project_name: {
           type: "string",
           title: "Naam opdracht / project"
@@ -116,6 +100,154 @@ const pre_project_schema = {
           type: "string",
           format: "date",
           default: today
+        },
+        project_feature: {
+          title: "Hoofdtype",
+          type: "string",
+          enum: [
+            "maintenance",
+            "improvement",
+            "renovation",
+            "new"
+          ],
+          enumNames: [
+            "Instanthouding/Groot onderhoud",
+            "Verbeterprogramma's",
+            "Herinrichting",
+            "Nieuwe aanleg"
+          ]
+        },
+      },
+      dependencies: {
+        project_feature: {
+          oneOf: [
+            {
+              properties: {
+                project_feature: {
+                  enum: [
+                    "maintenance"
+                  ]
+                },
+                project_subfeature: {
+                  title: "Subtype",
+                  type: "string",
+                  enum: [
+                    "Hoofdnet",
+                    "Openbare verlichting",
+                    "Kademuren",
+                    "Groen",
+                    "VRI/VIS/VM",
+                    "Bruggen",
+                    "Verharding woonbuurt",
+                    "Civiele constructies woonbuurt",
+                    "Integraal groot onderhoud woonbuurt"
+                  ],
+                  enumNames: [
+                    "Hoofdnet",
+                    "Openbare verlichting",
+                    "Kademuren",
+                    "Groen",
+                    "VRI/VIS/VM",
+                    "Bruggen",
+                    "Verharding woonbuurt",
+                    "Civiele constructies woonbuurt",
+                    "Integraal groot onderhoud woonbuurt"
+                  ]
+                }
+              }
+            },
+            {
+              properties: {
+                project_feature: {
+                  enum: [
+                    "improvement"
+                  ]
+                },
+                project_subfeature: {
+                  title: "Subtype",
+                  type: "string",
+                  enum: [
+                    "Elektrisch vervoer hubs",
+                    "Autoluw",
+                    "Fiets",
+                    "Verkeersveiligheid",
+                    "IAOV"
+                  ],
+                  enumNames: [
+                    "Elektrisch vervoer hubs",
+                    "Autoluw",
+                    "Fiets",
+                    "Verkeersveiligheid",
+                    "IAOV"
+                  ]
+                }
+              }
+            },
+            {
+              properties: {
+                project_feature: {
+                  enum: [
+                    "renovation"
+                  ]
+                },
+                project_subfeature: {
+                  title: "Subtype",
+                  type: "string",
+                  enum: [
+                    "Complexe/integrale herinrichting",
+                    "Stationslocaties",
+                    "Woonbuurt",
+                    "Hoofdnet",
+                    "Park, plein, speelplaats"
+                  ],
+                  enumNames: [
+                    "Complexe/integrale herinrichting",
+                    "Stationslocaties",
+                    "Woonbuurt",
+                    "Hoofdnet",
+                    "Park, plein, speelplaats"
+                  ]
+                }
+              }
+            },
+            {
+              properties: {
+                project_feature: {
+                  enum: [
+                    "new"
+                  ]
+                },
+                project_subfeature: {
+                  title: "Subtype",
+                  type: "string",
+                  enum: [
+                    "Parkeergebouwen",
+                    "Hoofdnet",
+                    "Civiele constructies",
+                    "Zuidasdok",
+                    "Sport",
+                    "Advisering gebiedsontwikkeling",
+                    "Ondergronds afval",
+                    "HOV",
+                    "Bouwrijp maken",
+                    "Woningrijp maken"
+                  ],
+                  enumNames: [
+                    "Parkeergebouwen",
+                    "Hoofdnet",
+                    "Civiele constructies",
+                    "Zuidasdok",
+                    "Sport",
+                    "Advisering gebiedsontwikkeling",
+                    "Ondergronds afval",
+                    "HOV",
+                    "Bouwrijp maken",
+                    "Woningrijp maken"
+                  ]
+                }
+              }
+            }
+          ]
         }
       }
     },
