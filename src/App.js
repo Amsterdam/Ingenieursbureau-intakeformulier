@@ -71,6 +71,105 @@ const pre_project_schema = {
   title: "Pre-opdrachtfase",
   type: "object",
   properties: {
+    client_information: {
+      title: "Opdrachtgever",
+      description: "",
+      type: "object",
+      required: [
+        "main_client"
+      ],
+      properties: {
+        organisation: {
+          title: "Organisatie",
+          type: "string",
+          enum: [
+            "GenO",
+            "R&D",
+            "SD-C",
+            "SD-N",
+            "SD-NW",
+            "SD-O",
+            "SD-W",
+            "SD-Z",
+            "SD-ZO",
+            "V&OR-SB",
+            "V&OR-AOG",
+            "Other"
+          ],
+          enumNames: [
+            "Grond en Ontwikkeling",
+            "Ruimte en Duurzaamheid",
+            "Stadsdeel Centrum",
+            "Stadsdeel Nieuw-West",
+            "Stadsdeel Noord",
+            "Stadsdeel Oost",
+            "Stadsdeel West",
+            "Stadsdeel Zuid",
+            "Stadsdeel Zuidoost",
+            "Verkeer en Openbare Ruimte - Stedelijk Beheer",
+            "Verkeer en Openbare Ruimte - Ambtelijk OpdrachtGever",
+            "Overig"
+          ]
+        },
+        booking_code: {
+          title: "Boekingscombinatie AFS",
+          $ref: "#/definitions/order_code"
+        },
+        board_client: {
+          title: "Bestuurlijk",
+          type: "object",
+          properties: {
+            first_name: {
+              title: "Voornaam",
+              type: "string"},
+            last_name: {
+              title: "Achternaam",
+              type: "string"}
+          }
+        },
+        main_client: {
+          title: "Ambtelijk",
+          $ref: "#/definitions/person"
+        },
+        delegated_client_question: {
+          title: "Gedelegeerd Opdrachtgever",
+          type: "string",
+          enum: [
+            "Nee",
+            "Ja"
+          ],
+          default: "Nee"
+        }
+      },
+      dependencies: {
+        delegated_client_question: {
+          oneOf: [
+            {
+              properties: {
+                delegated_client_question: {
+                  enum: [
+                    "Nee"
+                  ]
+                }
+              }
+            },
+            {
+              properties: {
+                delegated_client_question: {
+                  enum: [
+                    "Ja"
+                  ]
+                },
+                delegated_client: {
+                  title: "Gedelegeerd",
+                  $ref: "#/definitions/person"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
     project_information: {
       title: "Opdracht",
       description: "",
@@ -111,7 +210,7 @@ const pre_project_schema = {
             "new"
           ],
           enumNames: [
-            "Instanthouding/Groot onderhoud",
+            "Instandhouding/Groot onderhoud",
             "Verbeterprogramma's",
             "Herinrichting",
             "Nieuwe aanleg"
@@ -251,107 +350,8 @@ const pre_project_schema = {
         }
       }
     },
-    client_information: {
-      title: "Opdrachtgever",
-      description: "",
-      type: "object",
-      required: [
-        "main_client"
-      ],
-      properties: {
-        organisation: {
-          title: "Organisatie",
-          type: "string",
-          enum: [
-            "GenO",
-            "R&D",
-            "SD-C",
-            "SD-N",
-            "SD-NW",
-            "SD-O",
-            "SD-W",
-            "SD-Z",
-            "SD-ZO",
-            "V&OR-SB",
-            "V&OR-AOG",
-            "Other"
-          ],
-          enumNames: [
-            "Grond en Ontwikkeling",
-            "Ruimte en Duurzaamheid",
-            "Stadsdeel Centrum",
-            "Stadsdeel Nieuw-West",
-            "Stadsdeel Noord",
-            "Stadsdeel Oost",
-            "Stadsdeel West",
-            "Stadsdeel Zuid",
-            "Stadsdeel Zuidoost",
-            "Verkeer en Openbare Ruimte - Stedelijk Beheer",
-            "Verkeer en Openbare Ruimte - Ambtelijk OpdrachtGever",
-            "Overig"
-          ]
-        },
-        booking_code: {
-          title: "Boekingscombinatie AFS (indien reeds bekend)",
-          $ref: "#/definitions/order_code"
-        },
-        board_client: {
-          title: "Bestuurlijk",
-          type: "object",
-          properties: {
-            first_name: {
-              title: "Voornaam",
-              type: "string"},
-            last_name: {
-              title: "Achternaam",
-              type: "string"}
-          }
-        },
-        main_client: {
-          title: "Ambtelijk",
-          $ref: "#/definitions/person"
-        },
-        delegated_client_question: {
-          title: "Gedelegeerd Opdrachtgever",
-          type: "string",
-          enum: [
-            "Nee",
-            "Ja"
-          ],
-          default: "Nee"
-        }
-      },
-      dependencies: {
-        delegated_client_question: {
-          oneOf: [
-            {
-              properties: {
-                delegated_client_question: {
-                  enum: [
-                    "Nee"
-                  ]
-                }
-              }
-            },
-            {
-              properties: {
-                delegated_client_question: {
-                  enum: [
-                    "Ja"
-                  ]
-                },
-                delegated_client: {
-                  title: "Gedelegeerd",
-                  $ref: "#/definitions/person"
-                }
-              }
-            }
-          ]
-        }
-      }
-    },
     contractor_information: {
-      title: "Opdrachtnemer",
+      title: "Opdrachtverantwoordelijke",
       description: "",
       type: "object",
       required: [
@@ -360,7 +360,7 @@ const pre_project_schema = {
       ],
       properties: {
         projectmanager: {
-          title: "Opdrachtverantwoordelijke",
+          title: "Projectleider",
           $ref: "#/definitions/person"
         },
         section_projectmanager_question: {
@@ -561,68 +561,59 @@ const pre_project_schema = {
           format: "data-url",
           title: "Capaciteitsraming"
         }
+      }
+    },
+    project_approval: {
+      title: "Akkoord pre-opdracht",
+      description: "Mondeling tot 10.000 anders schriftelijk",
+      type: "object",
+      properties: {
+        date_approval_preproject: {
+          title: "Datum akkoord",
+          type: "string",
+          format: "date",
+          default: today
+        },
+        approved_preproject_comments: {
+          title: "Opmerking",
+          type: "string"
+        },
+        approved_preproject_client: {
+          title: "Akkoord Opdrachtgever",
+          type: "boolean"
+        },
+        document_approval_client: {
+          type: "string",
+          format: "data-url",
+          title: "E-mail bevestiging akkoord"
+        },
       },
       dependencies: {
-        estimate_costs_organisation: {
+        estimate_costs_budget_hours: {
           oneOf: [
-            {
+              {
               properties: {
-                estimate_costs_organisation: {
-                  enum: [
-                    10000, 
-                    50000, 
-                    250000, 
-                    1000000
-                  ]
+                estimatesestimate_costs_budget_hours: {
+                  minimum: 0,
+                  maximum: 10000
                 },
                 approved_by_client: {
-                  title: "Akkoord Opdrachtgever",
-                  type: "boolean"
+                  title: "Mondeling akkoord Opdrachtgever"
                 }
               }
             },
             {
               properties: {
-                estimate_costs_organisation: {
-                  enum: [
-                    0
-                  ]
+                estimate_costs_budget_hours: {
+                  minimum: 10001
                 },
-                approved_by_client_verbally: {
-                  title: "Mondeling akkoord Opdrachtgever",
-                  type: "boolean"
+                approved_by_client: {
+                  title: "Schriftelijk akkoord Opdrachtgever"
                 }
               }
-            }
+            },
           ]
-        },
-        estimate_costs_budget_hours: {
-            oneOf: [
-                {
-                properties: {
-                  estimate_costs_budget_hours: {
-                    minimum: 0,
-                    maximum: 10000
-                  },
-                  approved_by_client_verbally: {
-                    title: "Mondeling akkoord Opdrachtgever",
-                    type: "boolean"
-                  }
-                }
-              },
-              {
-                properties: {
-                  estimate_costs_budget_hours: {
-                    minimum: 10001
-                  },
-                  approved_by_client: {
-                    title: "Akkoord Opdrachtgever",
-                    type: "boolean"
-                  }
-                }
-              }
-            ]
-          }
+        }
       }
     }
   }
@@ -632,32 +623,6 @@ const project_schema = {
   title: "Opdrachtfase",
   type: "object",
   properties: {
-    project_information: {
-      title: "Opdrachtbeschrijving",
-      description: "Benut bij intake en werk uit voor de definitieve opdracht. Indien projectplan opgesteld, uitwerking daar.",
-      type: "object",
-      required: [
-        "project_reason"
-      ],
-      properties: {
-        project_reason: {
-          type: "string",
-          title: "Aanleiding"
-        },
-        project_goal: {
-          type: "string",
-          title: "Doel"
-        },
-        project_result: {
-          type: "string",
-          title: "Resultaat"
-        },
-        project_definition: {
-          type: "string",
-          title: "Afbakening"
-        }
-      }
-    },
     project_cost_recoveries: {
       title: "Dekking van kosten",
       description: "Indien projectplan opgesteld; zie daar voor details/onderbouwing.",
@@ -685,16 +650,79 @@ const project_schema = {
         }
       }
     },
+    programme_identification_numbers: {
+      title: "Programma identificatienummers",
+      type: "object",
+      properties: {
+        project_id_mip: {
+          title: "Meerjaren Investeringsprogramma (MIP)",
+          description: "https://maps.amsterdam.nl/mip/",
+          type: "string"
+        },
+        project_id_grex: {
+          title: "Grondexploitatie (GREX)",
+          type: "string"
+        }
+      }
+    },
+    project_identification_numbers: {
+      title: "Project identificatienummers",
+      type: "object",
+      properties: {
+        project_id_cora: {
+          title: "Coordinatie Openbare Ruimte Amsterdam (CORA)",
+          description: "https://cora.ivv.amsterdam.nl/cora",
+          type: "string"
+        },
+        project_id_digital_workplans: {
+          title: "Digitale Werkplannen",
+          description: "https://statistiek.data.amsterdam.nl/#/site/Amsterdam/views/Kaartprojecten/kaartprojecten",
+          type: "string"
+        }
+      }
+    },
+    project_information: {
+      title: "Opdrachtbeschrijving",
+      description: "Benut bij intake en werk uit voor de definitieve opdracht. Indien projectplan opgesteld, uitwerking daar.",
+      type: "object",
+      required: [
+        "project_reason"
+      ],
+      properties: {
+        project_reason: {
+          type: "string",
+          title: "Aanleiding"
+        },
+        project_goal: {
+          type: "string",
+          title: "Doel"
+        },
+        project_result: {
+          type: "string",
+          title: "Resultaat"
+        },
+        project_definition: {
+          type: "string",
+          title: "Afbakening"
+        }
+      }
+    },
     project_expected_budget: {
       title: "Geraamde kosten",
-      description: "Indien projectplan opgesteld; zie daar voor details/onderbouwing.",
+      description: "Indien projectplan opgesteld; zie daar voor details/onderbouwing. Deze raming vervangt de (eventuele) eerdere afgegeven indicatie",
       type: "object",
       required: [
         "project_budget_contactor"
       ],
       properties: {
+        project_budget_total: {
+          type: "number",
+          description: "SSK investeringskostenraming",
+          title: "Totale integrale projectkosten"
+        },
         project_budget_contactor: {
           type: "number",
+          description: "Opdrachtbudget",
           title: "Kosten Ingenieursbureau"
         },
         project_budget_external_contactors: {
@@ -761,6 +789,7 @@ const project_schema = {
     },
     project_risks: {
       title: "Risico's",
+      description: "Indien projectplan wordt gemaakt, alleen kort samenvatten.",
       type: "object",
       properties: {
         financial_risks: {
@@ -854,29 +883,13 @@ const project_schema = {
         }
       }
     },
-    project_identification_numbers: {
-      title: "Projectnummers",
+    project_plan: {
+      title: "Bijlagen",
       type: "object",
       properties: {
-        project_id_mip: {
-          title: "Meerjaren Informatie Planning (MIP)",
-          type: "string"
-        },
-        project_id_cora: {
-          title: "Coordinatie Openbare Ruimte Amsterdam (CORA)",
-          type: "string"
-        },
-        project_id_grex: {
-          title: "Grond Exploitatie (GREX)",
-          type: "string"
-        },
-        project_id_digital_workplans: {
-          title: "Digitale Werkplannen",
-          type: "string"
-        },
-        project_plan_file: {
-          title: "Projectplan",
-          description: "Voeg toe bij capaciteitsraming > € 50.000, inclusief bijlagen",
+        project_plan_files: {
+          title: "Documentie",
+          description: "Voeg projectplan toe (bij uren > € 50.000 verplicht), inclusief capaciteitsraming en overige bijlagen",
           type: "array",
           items: {
             type: "object",
@@ -887,7 +900,33 @@ const project_schema = {
                 format: "data-url"
               }
             }
-          }
+          } 
+        }
+      }
+    },
+    project_approval: {
+      title: "Akkoord opdracht",
+      description: "",
+      type: "object",
+      properties: {
+        date_approval_project: {
+          title: "Datum akkoord",
+          type: "string",
+          format: "date",
+          default: today
+        },
+        document_approval_note: {
+          type: "string",
+          title: "Opmerking"
+        },
+        approved_by_client: {
+          title: "Akkoord Opdrachtgever",
+          type: "boolean"
+        },
+        document_approval_client: {
+          type: "string",
+          format: "data-url",
+          title: "E-mail bevestiging akkoord"
         }
       }
     }
@@ -908,7 +947,7 @@ const project_uiSchema = {
     "project_definition": {
       "ui:widget": "textarea"
     }
-  },
+  }
 }
 
 const pre_project_uiSchema = {
