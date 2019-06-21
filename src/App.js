@@ -565,7 +565,7 @@ const pre_project_schema = {
     },
     project_approval: {
       title: "Akkoord pre-opdracht",
-      description: "Mondeling tot 10.000 anders schriftelijk",
+      description: "Mondeling tot €10.000 anders schriftelijk",
       type: "object",
       properties: {
         date_approval_preproject: {
