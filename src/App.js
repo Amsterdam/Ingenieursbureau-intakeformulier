@@ -658,10 +658,6 @@ const project_schema = {
           title: "Meerjaren Investeringsprogramma (MIP)",
           description: "https://maps.amsterdam.nl/mip/",
           type: "string"
-        },
-        project_id_grex: {
-          title: "Grondexploitatie (GREX)",
-          type: "string"
         }
       }
     },
